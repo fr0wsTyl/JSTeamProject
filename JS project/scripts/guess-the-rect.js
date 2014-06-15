@@ -7,7 +7,7 @@
 
     var layer = new Kinetic.Layer();
     var level = 0;
-    var currentCups = 3;
+    var currentrects = 3;
     var count = 2;
     var txt = new Kinetic.Text({
         x: 100,
@@ -21,7 +21,7 @@
     stage.add(layer);
 
     function Rect(cx, cy) {
-        var cup = new Kinetic.Rect({
+        var rect = new Kinetic.Rect({
             x: cx,
             y: cy,
             width: 40,
@@ -32,15 +32,15 @@
             cornerRadius: 2
         });
 
-        layer.add(cup);
+        layer.add(rect);
         stage.add(layer);
 
-        cup.on("click", function () {
+        rect.on("click", function () {
             var amplitude = 30;
             var period = 1000;
             var centerY = 143;
             var anim = new Kinetic.Animation(function (frame) {
-                cup.setY(amplitude * Math.sin(frame.time * 2 * Math.PI / period) + centerY);
+                rect.setY(amplitude * Math.sin(frame.time * 2 * Math.PI / period) + centerY);
             }, layer);
 
             anim.start();
@@ -60,14 +60,14 @@
                 if (level < 4) {
                     setTimeout(function () {
                         anim.stop();
-                        cups.push(new Rect((5 + (level + 3) * 100), 150));
+                        rects.push(new Rect((5 + (level + 3) * 100), 150));
                     }, 1050);
 
                     level++;
                     levels.setText('Level: ' + level);
-                    currentCups++;
-                    numberOfCups.setText('Rects: ' + currentCups);
-                    txt.setText('Congratulations! You guessed the rect and pass to the next level: ' + (level + 1));
+                    currentrects++;
+                    numberOfrects.setText('Rects: ' + currentrects);
+                    txt.setText('Congratulations! You guessed the rect and pass to the next level');
                     count = 2;
                 }
                 else {
@@ -128,7 +128,7 @@
                     layer.add(yes);
                     layer.add(no);
                     stage.add(layer);
-                    txt.setText('Ups! The ball is in rect ' + (random + 1) + '! ' + 'Do you wanna play AGAIN?');
+                    txt.setText('Ups! The ball is in rect ' + (random) + '! ' + 'Do you wanna play AGAIN?');
 
                     yes.addEventListener('click', function () {
                         play();
@@ -138,12 +138,14 @@
                         txt.setText('OKAY, GOODBYE!');
                         no.setText(' ');
                         yes.setText(' ');
+                        setTimeout(function () {
+                            // window.close();
+                            self.close();
+                        }, 500);
                     }, false);
                 }
             }
         });
-
-        console.log(level);
     }
 
     var levels = new Kinetic.Text({
@@ -162,21 +164,21 @@
         fontSize: 30
     });
 
-    var numberOfCups = new Kinetic.Text({
+    var numberOfrects = new Kinetic.Text({
         x: 680,
         y: 10,
-        text: 'Rects: ' + currentCups,
+        text: 'Rects: ' + currentrects,
         fill: 'darkgreen',
         fontSize: 30
     });
 
-    layer.add(numberOfCups);
+    layer.add(numberOfrects);
     layer.add(gameName);
     layer.add(levels);
 
-    var cups = [];
+    var rects = [];
     for (var i = 1; i < level + 4; i++) {
-        cups.push(Rect((5 + i * 100), 150));
+        rects.push(Rect((5 + i * 100), 150));
     }
 }
 play();
